@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-md-3 p-5">
-            <img class="w-100 rounded-circle" src="/storage/default_img/DP1.jpg" alt="Profile Picture">
+            <img class="w-100 rounded-circle border border-dark" src="/storage/{{ $user->profile->image }}" alt="Profile Picture">
         </div>
         <div class="col-sm-12 col-md-9 p-5">
 
@@ -15,11 +15,17 @@
                     <h1>{{ $user->name }}</h1>
                 </div>
 
-                <a class="btn btn-primary" href="">Add New Post</a>
+                @can('create', $user->profile)
+                    <a class="btn btn-primary" href="/post/create">Add New Post</a>
+                @endcan
             </div>
 
+            @can('update', $user->profile)
+             <a href="/profile/edit/{{ $user->username }}">Edit Profile</a>
+            @endcan
+
             <div class="d-flex">
-                <div class="pr-5"><strong>127K</strong> Posts</div>
+                <div class="pr-5"><strong>{{ $user->posts->count() }}</strong> Posts</div>
                 <div class="pr-5"><strong>24K</strong> Followers</div>
                 <div class="pr-5"><strong>62K</strong> Following</div>
             </div>
@@ -33,22 +39,17 @@
     <hr>
     <div class="row">
 
-        <div class="col-sm-12 col-md-4 py-3">
-            <img class="w-100" src="/storage/default_img/PIC1.jpg" alt="My Photos">
-        </div>
-        <div class="col-sm-12 col-md-4 py-3">
-            <img class="w-100" src="/storage/default_img/PIC2.jpg" alt="My Photos">
-        </div>
-        <div class="col-sm-12 col-md-4 py-3">
-            <img class="w-100" src="/storage/default_img/PIC3.jpg" alt="My Photos">
-        </div>
-        <div class="col-sm-12 col-md-4 py-3">
-            <img class="w-100" src="/storage/default_img/PIC4.jpg" alt="My Photos">
-        </div>
-        <div class="col-sm-12 col-md-4 py-3">
-            <img class="w-100" src="/storage/default_img/PIC5.jpg" alt="My Photos">
-        </div>
-
+        @forelse($user->posts as $post)
+            <div class="col-sm-12 col-md-4 py-3">
+                <a href="/post/{{ $post->image_hash }}">
+                    <img class="w-100" src="/storage/{{ $post->image }}" alt="My Photos">
+                </a>
+            </div>
+        @empty
+            <div class="col-md-12 text-center p-5">
+                <h1>No post yet</h1>
+            </div>
+        @endforelse
     </div>
 </div>
 @endsection

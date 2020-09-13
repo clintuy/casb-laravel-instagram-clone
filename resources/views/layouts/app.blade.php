@@ -24,9 +24,8 @@
 <body>
     <div id="app">
         
-        @auth
-            @include('inc.navbar')
-        @endauth
+
+        @include('inc.navbar')
         
         <main class="py-4">
             @yield('content')

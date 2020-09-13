@@ -17,6 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('post/create', 'PostController@create');
+Route::post('/post', 'PostsController@store');
+Route::get('/post/create', 'PostsController@create');
+Route::get('/post/{image_hash}', 'PostsController@show'); 
 
-Route::get('/profile/{username}', 'ProfilesController@index')->name('profile');
+
+Route::get('/profile/{username}', 'ProfilesController@index')->name('profile.index');
+Route::get('/profile/edit/{username}', 'ProfilesController@edit')->name('profile.edit');
+
+Route::patch('/profile/update/{user}', 'ProfilesController@update')->name('profile.update');
