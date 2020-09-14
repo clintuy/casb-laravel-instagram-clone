@@ -11,7 +11,12 @@ class ProfilesController extends Controller
     public function index($username) 
     {
         $user = User::where('username', $username)->firstOrFail();
-        return view('profiles.index', compact('user'));
+
+        $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
+
+        return view('profiles.index', compact('user', 'follows'));
+
+        
     }
 
     public function edit($username)
@@ -28,7 +33,7 @@ class ProfilesController extends Controller
         $data = request()->validate([
             'title'         => 'required',
             'description'   => 'required',
-            'url'           => 'required|url',
+            'url'           => 'required',
             'image'         => ''
         ]);
 
